@@ -1,3 +1,3 @@
-# rblackbeard.com repo
+# rblackbeard.com
 
 > ! in progress !
