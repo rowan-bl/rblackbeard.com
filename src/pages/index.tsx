@@ -55,12 +55,35 @@ export default function Home() {
   const [notifyLastMatch, setNotifyLastMatch] = useState(false);
   const [notifyOrderOfPlay, setNotifyOrderOfPlay] = useState(false);
   const [hasPermission, setHasPermission] = useState(false);
+  const [showPermissionPopup, setShowPermissionPopup] = useState(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined' && 'Notification' in window) {
-      setHasPermission(Notification.permission === 'granted');
+      const granted = Notification.permission === 'granted';
+      setHasPermission(granted);
+
+      // Show popup if not granted and not previously dismissed
+      if (!granted && Notification.permission !== 'denied') {
+        const dismissed = localStorage.getItem('courtfinder-permission-dismissed');
+        if (!dismissed) {
+          setShowPermissionPopup(true);
+        }
+      }
     }
   }, []);
+
+  const handleEnablePermissions = async () => {
+    if ('Notification' in window) {
+      const permission = await Notification.requestPermission();
+      setHasPermission(permission === 'granted');
+    }
+    setShowPermissionPopup(false);
+  };
+
+  const handleDismissPopup = () => {
+    localStorage.setItem('courtfinder-permission-dismissed', 'true');
+    setShowPermissionPopup(false);
+  };
 
   // Restore active tab from localStorage on mount
   useEffect(() => {
@@ -237,6 +260,33 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
         <link rel="manifest" href="/manifest.json" />
       </Head>
+
+      {/* Permission Request Popup */}
+      {showPermissionPopup && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="bg-card border rounded-xl shadow-2xl max-w-sm w-full p-6 space-y-4 animate-in fade-in zoom-in-95 duration-300">
+            <div className="flex justify-center">
+              <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+                <Bell className="h-6 w-6 text-primary" />
+              </div>
+            </div>
+            <div className="text-center space-y-2">
+              <h2 className="text-lg font-semibold">Enable Notifications</h2>
+              <p className="text-sm text-muted-foreground">
+                CourtFinder needs notification permissions to alert you when schedules are released and when last matches go out on court.
+              </p>
+            </div>
+            <div className="flex flex-col gap-2">
+              <Button onClick={handleEnablePermissions} className="w-full">
+                Enable Notifications
+              </Button>
+              <Button variant="ghost" onClick={handleDismissPopup} className="w-full text-muted-foreground">
+                Maybe Later
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-14 items-center justify-center px-4 relative">

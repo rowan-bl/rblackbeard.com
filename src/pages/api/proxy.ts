@@ -16,16 +16,33 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const response = await fetch(fullUrl, {
       method: req.method,
       headers: {
+        'Accept': 'application/json',
         'Content-Type': 'application/json',
         'User-Agent': clientUA,
-        'Referer': 'https://www.itftennis.com/'
+        'Referer': 'https://www.itftennis.com/',
       },
     });
 
-    const data = await response.json();
-    res.status(response.status).json(data);
+    const text = await response.text();
+
+    // Try to parse as JSON
+    try {
+      const data = JSON.parse(text);
+      res.status(response.status).json(data);
+    } catch {
+      // ITF returned non-JSON (e.g. HTML error page)
+      console.error(`Proxy: ITF returned non-JSON (status ${response.status}):`, text.substring(0, 500));
+      res.status(502).json({
+        error: 'ITF API returned non-JSON response',
+        upstreamStatus: response.status,
+        preview: text.substring(0, 200),
+      });
+    }
   } catch (error) {
     console.error('Proxy error:', error);
-    res.status(500).json({ error: 'Failed to fetch data from ITF API' });
+    res.status(500).json({
+      error: 'Failed to fetch data from ITF API',
+      details: error instanceof Error ? error.message : String(error),
+    });
   }
 }
