@@ -10,6 +10,11 @@ self.addEventListener('activate', (event) => {
   event.waitUntil(self.clients.claim());
 });
 
+self.addEventListener('fetch', (event) => {
+  // Essential for PWA installability criteria
+  event.respondWith(fetch(event.request));
+});
+
 self.addEventListener('notificationclick', (event) => {
   console.log('Notification clicked', event);
   event.notification.close();
