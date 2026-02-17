@@ -331,10 +331,23 @@ self.addEventListener('activate', (event) => {
 
 // ============================================================
 // Fetch Handler (required for PWA installability)
+// Only intercept same-origin requests; let third-party pass through
 // ============================================================
 
 self.addEventListener('fetch', (event) => {
-  event.respondWith(fetch(event.request));
+  const url = new URL(event.request.url);
+
+  // Only intercept same-origin requests
+  if (url.origin === self.location.origin) {
+    event.respondWith(
+      fetch(event.request).catch(() => {
+        // If network fails, return a basic offline response
+        return new Response('Offline', { status: 503, statusText: 'Service Unavailable' });
+      })
+    );
+  }
+  // Third-party requests (Cloudflare, etc.) are NOT intercepted
+  // They go through the browser's default fetch behavior
 });
 
 // ============================================================
