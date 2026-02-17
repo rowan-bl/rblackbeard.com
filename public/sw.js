@@ -2,7 +2,7 @@
 // CourtFinder Service Worker — Polling & Notifications
 // ============================================================
 
-const API_BASE = '/api/proxy';
+const API_BASE = '/api/itf';
 const POLL_INTERVAL = 30000; // 30 seconds
 const DB_NAME = 'courtfinder-sw';
 const DB_VERSION = 1;

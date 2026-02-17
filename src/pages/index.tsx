@@ -129,7 +129,7 @@ export default function Home() {
         skip: '0'
       });
 
-      const res = await fetch(`/api/proxy?${params.toString()}`);
+      const res = await fetch(`/api/itf?${params.toString()}`);
       if (!res.ok) throw new Error('Failed to fetch');
 
       const data = await res.json();
