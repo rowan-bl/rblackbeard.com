@@ -6,8 +6,48 @@ import { Layout, Model, TabNode, Action } from 'flexlayout-react';
 function AboutPanel() {
   return (
     <div style={{ padding: '2rem' }}>
-      <h1>Hi, I'm Skr_t</h1>
-      <p>Software Developer</p>
+      <h1>test test</h1>
+      <p>test</p>
+      <h1>test test</h1>
+      <p>test</p>
+      <h1>test test</h1>
+      <p>test</p>
+      <h1>test test</h1>
+      <p>test</p>
+      <h1>test test</h1>
+      <p>test</p>
+      <h1>test test</h1>
+      <p>test</p>
+      <h1>test test</h1>
+      <p>test</p>
+      <h1>test test</h1>
+      <p>test</p>
+      <h1>test test</h1>
+      <p>test</p>
+      <h1>test test</h1>
+      <p>test</p>
+      <h1>test test</h1>
+      <p>test</p>
+      <h1>test test</h1>
+      <p>test</p>
+      <h1>test test</h1>
+      <p>test</p>
+      <h1>test test</h1>
+      <p>test</p>
+      <h1>test test</h1>
+      <p>test</p>
+      <h1>test test</h1>
+      <p>test</p>
+      <h1>test test</h1>
+      <p>test</p>
+      <h1>test test</h1>
+      <p>test</p>
+      <h1>test test</h1>
+      <p>test</p>
+      <h1>test test</h1>
+      <p>test</p>
+      <h1>test test</h1>
+      <p>test</p>
     </div>
   );
 }
@@ -24,7 +64,7 @@ function ProjectsPanel() {
 // Very similar to GoldenLayout, but strictly typed and safer
 const defaultLayoutJson = {
   global: {
-    tabEnableClose: true,
+    tabEnableClose: false,
   },
   layout: {
     type: "row",

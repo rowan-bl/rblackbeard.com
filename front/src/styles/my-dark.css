@@ -5,4 +5,92 @@
   --font-family: var(--rfont-family);
   --font-size: var(--rfont-size);
   --color-text: var(--rbody-colour);
+
+  /* basics */
+  --color-background: black;
+  --color-base: black;
+  --color-1: rgb(17.85, 17.85, 17.85);
+  --color-2: rgb(25.5, 25.5, 25.5);
+  --color-3: rgb(38.25, 38.25, 38.25);
+  --color-4: #333333;
+  --color-5: rgb(63.75, 63.75, 63.75);
+  --color-6: rgb(76.5, 76.5, 76.5);
+
+  /* --- tabs --- */
+  --color-tabset-background: var(--color-1);
+  /* unfocused tab bar*/
+  --color-tabset-background-selected: var(--color-1);
+  /* ?? */
+  --color-tabset-background-maximized: var(--color-6);
+  /* ?? */
+  --color-tabset-divider-line: var(--color-4);
+  /* divider between tab bar and content */
+  --color-tabset-header-background: var(--color-1);
+  /* ?? */
+  --color-tabset-header: var(--color-text);
+  /* ?? */
+  --color-border-tab-content: var(--color-background);
+  /* ?? */
+  --color-border-background: var(--color-1);
+  /* ?? */
+  --color-border-divider-line: var(--color-4);
+  /* ?? */
+  --color-tab-content: var(--color-background);
+  /* tab content background */
+  --color-tab-selected: var(--color-text);
+  /* selected tab in tab group text */
+  --color-tab-selected-background: var(--color-4);
+  /* selected tab background */
+  --color-tab-unselected: gray;
+  /* unselected tab/s in tab group text */
+  --color-tab-unselected-background: transparent;
+  /* unselected tab/s background */
+  --color-tab-textbox: var(--color-text);
+  /* font colour inside the tab name editor */
+  --color-tab-textbox-background: var(--color-3);
+  /* background of the tab name editor */
+  --color-border-tab-selected: var(--color-text);
+  /* ?? */
+  --color-border-tab-selected-background: var(--color-4);
+  /* ?? */
+  --color-border-tab-unselected: gray;
+  /* ?? */
+  --color-border-tab-unselected-background: var(--color-2);
+  /* ?? */
+
+  /* --- window management --- */
+  --color-splitter: var(--color-2);
+  /* divider between windows */
+  --color-splitter-hover: var(--color-4);
+  /* hover of diver between windows */
+  --color-splitter-drag: var(--color-5);
+  /* resizing windows preview line */
+  --color-drag-rect-border: var(--color-4);
+  /* dragging/moving tab border */
+  --color-drag-rect-background: var(--color-1);
+  /* dragging/moving tab background */
+  --color-drag-rect: var(--color-text);
+  /* dragging/moving tab text */
+  --color-popup-border: var(--color-6);
+  /* ?? */
+  --color-popup-unselected: var(--color-text);
+  /* ?? */
+  --color-popup-unselected-background: var(--color-background);
+  /* ?? */
+  --color-popup-selected: var(--color-text);
+  /* ?? */
+  --color-popup-selected-background: var(--color-4);
+  /* ?? */
+  --color-edge-marker: gray;
+  /* edge marker background */
+  --color-edge-icon: #eee;
+  /* edge marker icon */
+  --color-mini-scroll-indicator: rgba(128, 128, 128, 0.5);
+  /* ?? */
+  --color-mini-scroll-indicator-hovered: rgba(128, 128, 128, 0.8);
+  /* ?? */
+  --size-mini-scroll-indicator: 3px;
+  /* ?? */
+  --color-toolbar-button-hover: var(--color-4);
+  /* ?? */
 }
