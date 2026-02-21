@@ -1,0 +1,13 @@
+---
+import BaseHead from "../components/baseHead.astro";
+import LayoutShell from "../components/shell";
+---
+
+<html lang="en">
+	<head>
+		<BaseHead />
+	</head>
+	<body>
+		<LayoutShell client:only="react" />
+	</body>
+</html>

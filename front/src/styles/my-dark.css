@@ -1,0 +1,8 @@
+@import '../../node_modules/flexlayout-react/style/dark.css';
+
+
+.flexlayout__layout {
+  --font-family: var(--rfont-family);
+  --font-size: var(--rfont-size);
+  --color-text: var(--rbody-colour);
+}

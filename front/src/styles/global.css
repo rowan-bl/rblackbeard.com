@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+:root {
+  --rfont-family: 'Monaspace Argon', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --rfont-size: .8125rem;
+  --rfont-weight: 400;
+  --rbody-colour: #FAF9F5;
+}
+
+body {
+  font-family: var(--rfont-family);
+  font-size: var(--rfont-size);
+  font-weight: var(--rfont-weight);
+  color: var(--rbody-colour);
+}
