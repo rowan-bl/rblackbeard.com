@@ -64,7 +64,8 @@ function ProjectsPanel() {
 // Very similar to GoldenLayout, but strictly typed and safer
 const defaultLayoutJson = {
   global: {
-    tabEnableClose: false,
+    tabEnableClose: true,
+    tabSetEnableMaximize: false,
   },
   layout: {
     type: "row",
@@ -72,14 +73,14 @@ const defaultLayoutJson = {
     children: [
       {
         type: "tabset",
-        weight: 30, // 30% width
+        weight: 50, // 30% width
         children: [
           { type: "tab", name: "About", component: "about" }
         ]
       },
       {
         type: "tabset",
-        weight: 70, // 70% width
+        weight: 50, // 70% width
         children: [
           { type: "tab", name: "Projects", component: "projects" }
         ]
@@ -95,7 +96,8 @@ export default function LayoutShell() {
   const [model, setModel] = useState(() => {
     const saved = localStorage.getItem('flex-layout');
     if (saved) {
-      return Model.fromJson(JSON.parse(saved));
+      // return Model.fromJson(JSON.parse(saved));
+      return Model.fromJson(defaultLayoutJson);
     }
     return Model.fromJson(defaultLayoutJson);
   });

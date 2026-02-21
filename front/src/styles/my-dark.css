@@ -7,14 +7,16 @@
   --color-text: var(--rbody-colour);
 
   /* basics */
-  --color-background: black;
-  --color-base: black;
-  --color-1: rgb(17.85, 17.85, 17.85);
+  --color-background: #1d1f21;
+  --color-base: #1d1f21;
+  --color-1: #35393c;
   --color-2: rgb(25.5, 25.5, 25.5);
   --color-3: rgb(38.25, 38.25, 38.25);
   --color-4: #333333;
   --color-5: rgb(63.75, 63.75, 63.75);
   --color-6: rgb(76.5, 76.5, 76.5);
+  --color-7: #8c9440;
+  --color-8: #292c2f;
 
   /* --- tabs --- */
   --color-tabset-background: var(--color-1);
@@ -39,11 +41,11 @@
   /* tab content background */
   --color-tab-selected: var(--color-text);
   /* selected tab in tab group text */
-  --color-tab-selected-background: var(--color-4);
+  --color-tab-selected-background: var(--color-background);
   /* selected tab background */
   --color-tab-unselected: gray;
   /* unselected tab/s in tab group text */
-  --color-tab-unselected-background: transparent;
+  --color-tab-unselected-background: var(--color-8);
   /* unselected tab/s background */
   --color-tab-textbox: var(--color-text);
   /* font colour inside the tab name editor */
@@ -59,11 +61,11 @@
   /* ?? */
 
   /* --- window management --- */
-  --color-splitter: var(--color-2);
+  --color-splitter: var(--color-1);
   /* divider between windows */
-  --color-splitter-hover: var(--color-4);
+  --color-splitter-hover: var(--color-7);
   /* hover of diver between windows */
-  --color-splitter-drag: var(--color-5);
+  --color-splitter-drag: var(--color-7);
   /* resizing windows preview line */
   --color-drag-rect-border: var(--color-4);
   /* dragging/moving tab border */
@@ -93,4 +95,48 @@
   /* ?? */
   --color-toolbar-button-hover: var(--color-4);
   /* ?? */
+}
+
+.flexlayout__tabset-selected {
+  background-image: none;
+  background-color: var(--color-5);
+}
+
+.flexlayout__tabset-maximized {
+  background-image: none;
+  background-color: var(--color-6);
+}
+
+.flexlayout__splitter_drag {
+  border-radius: 0;
+}
+
+.flexlayout__tabset_tabbar_outer_top {
+  padding: 2px 2px 0px 0px;
+  border-bottom: 0;
+}
+
+.flexlayout__tabset_tabbar_outer_bottom {
+  padding: 0px 2px 2px 0px;
+  border-top: 0;
+}
+
+@media (hover: hover) {
+  .flexlayout__splitter:hover {
+    border-radius: 0;
+  }
+}
+
+.flexlayout__tab_button--unselected .flexlayout__tab_button_trailing {
+  visibility: visible;
+}
+
+@media (hover: hover) {
+  .flexlayout__tab_button:hover {
+    background-color: var(--color-tab-selected-background);
+  }
+}
+
+.flexlayout__tabset_tabbar_inner_tab_container {
+  padding-left: 0;
 }
