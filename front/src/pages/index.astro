@@ -1,6 +1,6 @@
 ---
 import BaseHead from "../components/baseHead.astro";
-import LayoutShell from "../components/shell";
+import Layout from "../layouts/layout";
 ---
 
 <html lang="en" translate="no">
@@ -8,6 +8,6 @@ import LayoutShell from "../components/shell";
 		<BaseHead />
 	</head>
 	<body>
-		<LayoutShell client:only="react" />
+		<Layout client:only="react" />
 	</body>
 </html>

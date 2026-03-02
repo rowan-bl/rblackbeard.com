@@ -17,6 +17,7 @@
   --color-6: rgb(76.5, 76.5, 76.5);
   --color-7: #8c9440;
   --color-8: #292c2f;
+  --color-highlight: #161719;
 
   /* --- tabs --- */
   --color-tabset-background: var(--color-1);
@@ -43,7 +44,7 @@
   /* selected tab in tab group text */
   --color-tab-selected-background: var(--color-background);
   /* selected tab background */
-  --color-tab-unselected: gray;
+  --color-tab-unselected: color-mix(in srgb, var(--rbody-color) 50%, transparent);
   /* unselected tab/s in tab group text */
   --color-tab-unselected-background: var(--color-8);
   /* unselected tab/s background */
@@ -99,7 +100,7 @@
 
 .flexlayout__tabset-selected {
   background-image: none;
-  background-color: var(--color-5);
+  background-color: unset;
 }
 
 .flexlayout__tabset-maximized {
@@ -112,7 +113,7 @@
 }
 
 .flexlayout__tabset_tabbar_outer_top {
-  padding: 2px 2px 0px 0px;
+  padding: 0px 2px 0px 0px;
   border-bottom: 0;
 }
 
@@ -139,4 +140,50 @@
 
 .flexlayout__tabset_tabbar_inner_tab_container {
   padding-left: 0;
+}
+
+.flexlayout__splitter.flexlayout__splitter_horz {
+  width: 7px !important;
+  min-width: 7px !important;
+}
+
+.flexlayout__splitter.flexlayout__splitter_vert {
+  height: 7px !important;
+  min-height: 7px !important;
+}
+
+.flexlayout__tab_button {
+  padding: 4px 0.5em 4px 1.5em;
+  gap: 1em;
+}
+
+
+.flexlayout__tabset_tabbar_inner_tab_container_top {
+  border-top: none;
+}
+
+.flexlayout__tab_button_content {
+  line-height: 20px;
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent !important;
+}
+
+::-webkit-scrollbar-track-piece {
+  background-color: transparent !important;
+}
+
+::-webkit-scrollbar-corner {
+  background-color: transparent !important;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 0;
+  background-color: var(--color-highlight);
 }

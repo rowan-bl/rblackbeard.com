@@ -1,12 +1,37 @@
 @import "tailwindcss";
 
 :root {
+  color-scheme: dark;
+
   --rfont-family: 'Monaspace Argon', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --rfont-size: .8125rem;
   --rfont-weight: 400;
-  --rbody-colour: #FAF9F5;
+  --rbody-color: #c9c7c4;
 
-  color-scheme: dark;
+  --rcolor-bg: #1d1f21;
+  --rcolor-fg: #c5c8c6;
+
+  --rcolor-0: #282a2e;
+  --rcolor-1: #a54242;
+  --rcolor-2: #8c9440;
+  --rcolor-3: #de935f;
+  --rcolor-4: #5f819d;
+  --rcolor-5: #85678f;
+  --rcolor-6: #5e8d87;
+  --rcolor-7: #707880;
+
+  --rcolor-8: #373b41;
+  --rcolor-9: #cc6666;
+  --rcolor-10: #b5bd68;
+  --rcolor-11: #f0c674;
+  --rcolor-12: #81a2be;
+  --rcolor-13: #b294bb;
+  --rcolor-14: #8abeb7;
+  --rcolor-15: #c5c8c6;
+
+  --rcolor-highlight: #161719;
+  --rcolor-gap: #35393c;
+
 }
 
 /* --- start of reset --- */
@@ -15,11 +40,6 @@
 *::before,
 *::after {
   box-sizing: border-box;
-}
-
-* {
-  margin: 0;
-  padding: 0;
 }
 
 html,
@@ -43,7 +63,7 @@ select {
   font: inherit;
 }
 
-p,
+/* p,
 h1,
 h2,
 h3,
@@ -51,7 +71,7 @@ h4,
 h5,
 h6 {
   overflow-wrap: break-word;
-}
+} */
 
 /* --- end of reset --- */
 
@@ -60,5 +80,10 @@ body {
   font-family: var(--rfont-family);
   font-size: var(--rfont-size);
   font-weight: var(--rfont-weight);
-  color: var(--rbody-colour);
+  color: var(--rbody-color);
+}
+
+a {
+  color: var(--rcolor-4);
+  text-decoration: underline;
 }
