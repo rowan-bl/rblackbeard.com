@@ -107,6 +107,9 @@ const Letterpress: React.FC = () => {
       return;
     }
 
+    // Guard against SSR
+    if (typeof document === 'undefined') return;
+
     const el = document.elementFromPoint(e.clientX, e.clientY) as HTMLElement | null;
     const btn = el?.closest('button[data-idx]') as HTMLButtonElement | null;
     if (!btn) return;

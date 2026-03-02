@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 import { Layout as Lay, Model, TabNode, Action } from 'flexlayout-react';
 import Letterpress from '../components/letterpress';
 
@@ -58,17 +58,27 @@ const defaultLayoutJson = {
 };
 
 export default function Layout() {
-  const [model, setModel] = useState(() => {
-    const saved = localStorage.getItem('layout');
-    // if (saved) {
-    //   return Model.fromJson(JSON.parse(saved));
-    // }
-    return Model.fromJson(defaultLayoutJson);
-  });
+  const [model, setModel] = useState(() => Model.fromJson(defaultLayoutJson));
+
+  // Load saved layout from localStorage after mount (client-side only)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('layout');
+      if (saved) {
+        try {
+          setModel(Model.fromJson(JSON.parse(saved)));
+        } catch (err) {
+          console.error('Failed to load saved layout:', err);
+        }
+      }
+    }
+  }, []);
 
   // Save layout state whenever it changes
   const onModelChange = (currentModel: Model, action: Action) => {
-    localStorage.setItem('layout', JSON.stringify(currentModel.toJson()));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('layout', JSON.stringify(currentModel.toJson()));
+    }
   };
 
   // The factory function: Maps a config string to actual JSX
