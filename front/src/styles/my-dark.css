@@ -187,3 +187,8 @@
   border: 0;
   background-color: var(--color-highlight);
 }
+
+.flexlayout__tab_button,
+.flexlayout__splitter {
+  touch-action: none;
+}

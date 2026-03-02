@@ -1,5 +1,6 @@
 import { Fragment, useState } from 'react';
 import { Layout as Lay, Model, TabNode, Action } from 'flexlayout-react';
+import Letterpress from '../components/letterpress';
 
 // --- Panel Components ---
 // Notice they are just normal React components taking normal props
@@ -36,7 +37,7 @@ function ProjectsPanel() {
 // --- Layout Config ---
 const defaultLayoutJson = {
   global: {
-    tabEnableClose: true,
+    tabEnableClose: false,
     tabSetEnableMaximize: false,
   },
   layout: {
@@ -45,33 +46,13 @@ const defaultLayoutJson = {
     children: [
       {
         type: "tabset",
-        weight: 50,
+        weight: 100,
         children: [
-          { type: "tab", name: "About", component: "about" }
+          { type: "tab", name: "About", component: "about" },
+          { type: "tab", name: "Projects", component: "projects" },
+          { type: "tab", name: "Solver", component: "solver" },
         ]
       },
-      {
-        type: "tabset",
-        weight: 50,
-        children: [
-          { type: "tab", name: "Projects", component: "projects" }
-        ]
-      },
-      {
-        type: "tabset",
-        weight: 50,
-        children: [
-          { type: "tab", name: "Projects", component: "projects" }
-        ]
-      },
-      {
-        type: "tabset",
-        weight: 50,
-        children: [
-          { type: "tab", name: "Projects", component: "projects" }
-        ]
-      }
-
     ]
   }
 };
@@ -79,9 +60,9 @@ const defaultLayoutJson = {
 export default function Layout() {
   const [model, setModel] = useState(() => {
     const saved = localStorage.getItem('layout');
-    if (saved) {
-      return Model.fromJson(JSON.parse(saved));
-    }
+    // if (saved) {
+    //   return Model.fromJson(JSON.parse(saved));
+    // }
     return Model.fromJson(defaultLayoutJson);
   });
 
@@ -97,6 +78,7 @@ export default function Layout() {
     // You can pass the node itself if the panel needs to rename itself or close itself
     if (component === "about") return <AboutPanel />;
     if (component === "projects") return <ProjectsPanel />;
+    if (component === "solver") return <Letterpress />;
 
     return <div>Component not found</div>;
   };
