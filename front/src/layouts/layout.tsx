@@ -1,24 +1,12 @@
 import { Fragment, useState, useEffect } from 'react';
 import { Layout as Lay, Model, TabNode, Action } from 'flexlayout-react';
 import Letterpress from '../components/letterpress';
+import About from '../components/about';
 
 // --- Panel Components ---
-// Notice they are just normal React components taking normal props
-function AboutPanel() {
-  return (
-    <div style={{ padding: '2rem' }}>
-      {Array.from({ length: 75 }, (_, i) => (
-        <Fragment key={i}>
-          <p>scroll</p>
-        </Fragment>
-      ))}
-    </div>
-  );
-}
-
 function ProjectsPanel() {
   return (
-    <div style={{ padding: '2rem' }}>
+    <div className='p-5'>
       <h1>h1 test</h1>
       <h2>h2 test</h2>
       <h3>h3 test</h3>
@@ -86,7 +74,7 @@ export default function Layout() {
     const component = node.getComponent();
 
     // You can pass the node itself if the panel needs to rename itself or close itself
-    if (component === "about") return <AboutPanel />;
+    if (component === "about") return <About />;
     if (component === "projects") return <ProjectsPanel />;
     if (component === "solver") return <Letterpress />;
 
@@ -98,7 +86,7 @@ export default function Layout() {
 
       {/* top bar */}
       <div className="flex h-[50px] items-center-safe bg-var(--rcolor-highlight) px-5">
-        <h1 >rblackbeard.com</h1>
+        <h1 className='text-(--rcolor-2)'>rblackbeard.com</h1>
       </div>
 
       {/* layout */}

@@ -282,7 +282,7 @@ const Letterpress: React.FC = () => {
   }, [allResults, filterEnabled, maxLength]);
 
   return (
-    <div className="max-w-md mx-auto p-4 flex flex-col items-center min-h-screen">
+    <div className="max-w-md mx-auto p-4 flex flex-col items-center">
       <div className="w-full mb-6">
         <label className="block text-sm mb-2">Enter 25 Letters (Left to right, top to bottom):</label>
         <div className="flex space-x-2">
