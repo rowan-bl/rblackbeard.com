@@ -26,6 +26,7 @@ function ProjectsPanel() {
 const defaultLayoutJson = {
   global: {
     tabEnableClose: false,
+    tabEnableRename: false,
     tabSetEnableMaximize: false,
   },
   layout: {
