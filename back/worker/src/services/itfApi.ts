@@ -1,4 +1,4 @@
-import { Tournament, Match, OrderOfPlay } from '../types/tournament';
+import { Tournament, Match, OrderOfPlayDay } from '../types/tournament';
 
 export class ITFApiClient {
   private proxyUrl: string;
@@ -76,30 +76,17 @@ export class ITFApiClient {
     }));
   }
 
-  async fetchOrderOfPlay(tournamentKey: string): Promise<OrderOfPlay | null> {
+  async fetchOrderOfPlayDays(tournamentKey: string): Promise<OrderOfPlayDay[]> {
     const days = await this.fetchFromProxy('TournamentApi/GetOrderOfPlayDays', { tournamentKey });
     console.log(`GetOrderOfPlayDays for ${tournamentKey}:`, JSON.stringify(days));
 
-    if (!days || !Array.isArray(days) || days.length === 0) {
-      return { released: false };
-    }
+    if (!days || !Array.isArray(days)) return [];
 
-    // Get the most recent day
-    const latestDay = days[days.length - 1];
-    const data = await this.fetchFromProxy('TournamentApi/GetOrderOfPlay', {
-      orderOfPlayDayId: String(latestDay.orderOfPlayDayId),
-    });
-    console.log(`GetOrderOfPlay for ${latestDay.orderOfPlayDayId}:`, JSON.stringify(data)?.substring(0, 500));
-
-    if (!data || !Array.isArray(data) || data.length === 0) {
-      return { released: false };
-    }
-
-    return {
-      released: true,
-      timestamp: Date.now(),
-      courts: data,
-    };
+    return days.map((d: any) => ({
+      dayId: d.orderOfPlayDayId,
+      playDate: d.playDate,
+      playDateString: d.playDateString,
+    }));
   }
 
   async checkLastMatchStarted(tournamentKey: string): Promise<{

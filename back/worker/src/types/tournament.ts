@@ -21,13 +21,10 @@ export interface Match {
   scheduledTime?: string;
 }
 
-export interface OrderOfPlay {
-  released: boolean;
-  timestamp?: number;
-  courts?: Array<{
-    courtName: string;
-    matches: Match[];
-  }>;
+export interface OrderOfPlayDay {
+  dayId: number;
+  playDate: string;
+  playDateString: string;
 }
 
 export interface TournamentState {

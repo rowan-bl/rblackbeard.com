@@ -1,7 +1,8 @@
 import { DatabaseQueries } from '../db/queries';
+import { TelegramBot } from '../services/telegramBot';
 import { SubscribeRequest, SubscribeResponse } from '../types/subscription';
 
-export async function handleSubscribe(request: Request, db: DatabaseQueries): Promise<Response> {
+export async function handleSubscribe(request: Request, db: DatabaseQueries, telegram: TelegramBot): Promise<Response> {
   if (request.method !== 'POST') {
     return new Response(JSON.stringify({ error: 'Method not allowed' }), {
       status: 405,
@@ -53,6 +54,15 @@ export async function handleSubscribe(request: Request, db: DatabaseQueries): Pr
       notifyOrderOfPlay: body.notifyOrderOfPlay || false,
       createdAt: Date.now(),
     });
+
+    // Notify user of their updated subscription
+    const message = telegram.formatSubscriptionConfirmation(
+      body.tournamentName,
+      body.tournamentKey,
+      body.notifyLastMatch || false,
+      body.notifyOrderOfPlay || false,
+    );
+    await telegram.sendMessage(user.telegramChatId, message);
 
     const response: SubscribeResponse = {
       success: true,

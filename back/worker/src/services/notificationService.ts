@@ -108,42 +108,41 @@ export class NotificationService {
     subscriptions: Subscription[],
     currentState: any
   ): Promise<void> {
-    const orderOfPlay = await this.itfApi.fetchOrderOfPlay(tournamentKey);
-    console.log(`OOP result for ${tournamentKey}:`, JSON.stringify(orderOfPlay));
+    const days = await this.itfApi.fetchOrderOfPlayDays(tournamentKey);
 
-    if (!orderOfPlay || !orderOfPlay.released) {
-      return;
-    }
+    if (days.length === 0) return;
 
-    // Parse previous state
-    let previousState: any = null;
+    // Load previously known day IDs
+    let knownDayIds: number[] = [];
     if (currentState?.orderOfPlayStatus) {
       try {
-        previousState = JSON.parse(currentState.orderOfPlayStatus);
+        const parsed = JSON.parse(currentState.orderOfPlayStatus);
+        knownDayIds = parsed.knownDayIds || [];
       } catch {
-        previousState = null;
+        knownDayIds = [];
       }
     }
 
-    // Check if this is a new release (was not released before, now it is)
-    const isNewRelease = !previousState || !previousState.released;
+    const isFirstCheck = !currentState?.orderOfPlayStatus;
+    const newDays = isFirstCheck ? [] : days.filter(d => !knownDayIds.includes(d.dayId));
 
-    if (isNewRelease) {
-      console.log(`Order of play released for ${tournamentKey}`);
-
-      // Send notifications to all subscribed users
-      for (const sub of subscriptions) {
-        await this.sendOrderOfPlayNotification(sub);
+    if (newDays.length > 0) {
+      console.log(`New OOP day(s) for ${tournamentKey}: ${newDays.map(d => d.playDateString).join(', ')}`);
+      for (const newDay of newDays) {
+        for (const sub of subscriptions) {
+          await this.sendOrderOfPlayNotification(sub, newDay.playDateString);
+        }
       }
-
-      // Update state
-      await this.db.updateTournamentState({
-        tournamentKey,
-        lastMatchStatus: currentState?.lastMatchStatus,
-        orderOfPlayStatus: JSON.stringify(orderOfPlay),
-        lastCheckedAt: Date.now(),
-      });
     }
+
+    if (newDays.length === 0 && !isFirstCheck) return;
+
+    await this.db.updateTournamentState({
+      tournamentKey,
+      lastMatchStatus: currentState?.lastMatchStatus,
+      orderOfPlayStatus: JSON.stringify({ knownDayIds: days.map(d => d.dayId) }),
+      lastCheckedAt: Date.now(),
+    });
   }
 
   private async sendLastMatchNotification(subscription: Subscription, court: string, match: string): Promise<void> {
@@ -169,7 +168,7 @@ export class NotificationService {
     }
   }
 
-  private async sendOrderOfPlayNotification(subscription: Subscription): Promise<void> {
+  private async sendOrderOfPlayNotification(subscription: Subscription, playDateString: string): Promise<void> {
     try {
       const user = await this.db.getTelegramUser(subscription.telegramUsername);
 
@@ -180,7 +179,8 @@ export class NotificationService {
 
       const message = this.telegram.formatOrderOfPlayNotification(
         subscription.tournamentName,
-        subscription.tournamentKey
+        subscription.tournamentKey,
+        playDateString
       );
 
       await this.telegram.sendMessage(user.telegramChatId, message);

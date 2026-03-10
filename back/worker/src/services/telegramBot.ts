@@ -131,11 +131,24 @@ export class TelegramBot {
     await this.sendMessage(chatId, responseText);
   }
 
+  formatSubscriptionConfirmation(tournamentName: string, tournamentKey: string, notifyLastMatch: boolean, notifyOrderOfPlay: boolean): string {
+    const notifications = [
+      notifyLastMatch ? '⏰ Last match started' : null,
+      notifyOrderOfPlay ? '📋 Order of play released' : null,
+    ].filter(Boolean);
+
+    const notifLine = notifications.length > 0
+      ? `Notifications enabled:\n${notifications.map(n => `  • ${n}`).join('\n')}`
+      : 'No notifications enabled.';
+
+    return `🎾 Subscription updated\n\n📍 ${tournamentName}\n(${tournamentKey})\n\n${notifLine}`;
+  }
+
   formatLastMatchNotification(tournamentName: string, tournamentKey: string, court: string, match: string): string {
     return `🎾 ITF Tournament Alert\n\n📍 ${tournamentName}\n(${tournamentKey})\n\n⏰ Last match on ${court} has started!\n\nMatch: ${match}`;
   }
 
-  formatOrderOfPlayNotification(tournamentName: string, tournamentKey: string): string {
-    return `🎾 ITF Tournament Alert\n\n📍 ${tournamentName}\n(${tournamentKey})\n\n📋 Order of play has been released!`;
+  formatOrderOfPlayNotification(tournamentName: string, tournamentKey: string, playDateString: string): string {
+    return `🎾 ITF Tournament Alert\n\n📍 ${tournamentName}\n(${tournamentKey})\n\n📋 Order of play released for ${playDateString}!`;
   }
 }

@@ -38,7 +38,7 @@ export default {
 		try {
 			// Route: POST /api/subscribe
 			if (url.pathname === '/api/subscribe' && request.method === 'POST') {
-				const response = await handleSubscribe(request, db);
+				const response = await handleSubscribe(request, db, telegram);
 				const responseHeaders = new Headers(response.headers);
 				Object.entries(corsHeaders(origin)).forEach(([key, value]) => {
 					responseHeaders.set(key, value);
