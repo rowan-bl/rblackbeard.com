@@ -2,6 +2,7 @@ import { Fragment, useState, useEffect } from 'react';
 import { Layout as Lay, Model, TabNode, Action } from 'flexlayout-react';
 import Letterpress from '../components/letterpress';
 import About from '../components/about';
+import ITF from '../components/itf';
 
 // --- Panel Components ---
 function ProjectsPanel() {
@@ -40,6 +41,7 @@ const defaultLayoutJson = {
           { type: "tab", name: "About", component: "about" },
           { type: "tab", name: "Projects", component: "projects" },
           { type: "tab", name: "Solver", component: "solver" },
+          { type: "tab", name: "ITF", component: "itf" },
         ]
       },
     ]
@@ -78,6 +80,7 @@ export default function Layout() {
     if (component === "about") return <About />;
     if (component === "projects") return <ProjectsPanel />;
     if (component === "solver") return <Letterpress />;
+    if (component === "itf") return <ITF />;
 
     return <div>Component not found</div>;
   };

@@ -4,7 +4,7 @@
  */
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "worker",
+	"name": "itf-notification-worker",
 	"main": "src/index.ts",
 	"compatibility_date": "2025-09-27",
 	"observability": {
@@ -12,11 +12,18 @@
 	},
 	"triggers": {
 		"crons": [
-			"* * * * *"
+			"*/1 * * * *"
 		]
 	},
 	"compatibility_flags": [
 		"nodejs_compat"
+	],
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "itf-notifications",
+			"database_id": "e20f712c-627c-491f-8b27-9d191ec5c72a"
+		}
 	]
 	/**
 	 * Smart Placement

@@ -153,7 +153,9 @@
 }
 
 .flexlayout__tab_button {
-  padding: 4px 0.5em 4px 1.5em;
+  /* uncomment if using close button */
+  /* padding: 4px 0.5em 4px 1.5em; */
+  padding: 4px 0.5em 4px 0.5em;
   gap: 1em;
 }
 
