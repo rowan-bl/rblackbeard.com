@@ -1,65 +1,33 @@
 const express = require('express');
-const puppeteer = require('puppeteer-extra');
-const StealthPlugin = require('puppeteer-extra-plugin-stealth');
-
-puppeteer.use(StealthPlugin());
+const initCycleTLS = require('cycletls');
 
 const app = express();
 const ITF_BASE_URL = 'https://www.itftennis.com/tennis/api';
-const FAST_FETCH_TIMEOUT_MS = 3000;
 
-let browser = null;
-
-async function getBrowser() {
-  if (browser && browser.connected) return browser;
-  browser = await puppeteer.launch({
-    headless: true,
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      '--disable-dev-shm-usage',
-      '--disable-gpu',
-      '--no-zygote',
-    ],
-  });
-  browser.on('disconnected', () => { browser = null; });
-  return browser;
-}
+let cycleTLS = null;
+initCycleTLS().then(c => {
+  cycleTLS = c;
+  console.log('CycleTLS ready');
+}).catch(err => console.error('CycleTLS init failed:', err.message));
 
 function isBlocked(body) {
-  return body.trimStart().startsWith('<');
+  return !body || body.trimStart().startsWith('<');
 }
 
-async function fetchFast(url) {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), FAST_FETCH_TIMEOUT_MS);
-  try {
-    const response = await fetch(url, {
-      signal: controller.signal,
-      headers: {
-        'Accept': 'application/json, text/plain, */*',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
-        'Referer': 'https://www.itftennis.com/',
-        'Cache-Control': 'no-cache',
-      },
-    });
-    const body = await response.text();
-    return { status: response.status, body };
-  } finally {
-    clearTimeout(timer);
-  }
-}
-
-async function fetchWithPuppeteer(url) {
-  const b = await getBrowser();
-  const page = await b.newPage();
-  try {
-    await page.goto(url, { waitUntil: 'networkidle2', timeout: 20000 });
-    const body = await page.evaluate(() => document.body.innerText);
-    return { status: 200, body };
-  } finally {
-    await page.close();
-  }
+async function fetchWithCycleTLS(url) {
+  if (!cycleTLS) throw new Error('CycleTLS not ready');
+  const response = await cycleTLS(url, {
+    headers: {
+      'Accept': 'application/json, text/plain, */*',
+      'Referer': 'https://www.itftennis.com/',
+      'Cache-Control': 'no-cache',
+    },
+    ja3: '771,4865-4866-4867-49195-49199-49196-49200-52393-52392-49171-49172-156-157-47-53,0-23-65281-10-11-35-16-5-13-18-51-45-43-27-21,29-23-24,0',
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+    timeout: 10,
+  }, 'get');
+  const body = await response.text();
+  return { status: response.status, body };
 }
 
 async function fetchFromITF(endpoint, params) {
@@ -68,15 +36,18 @@ async function fetchFromITF(endpoint, params) {
     : '';
   const url = `${ITF_BASE_URL}/${endpoint}${qs}`;
 
-  try {
-    const result = await fetchFast(url);
-    if (!isBlocked(result.body)) return result;
-    console.log(`[blocked] ${endpoint} — retrying with Puppeteer`);
-  } catch (err) {
-    console.log(`[fast-fetch failed] ${endpoint}: ${err.message} — retrying with Puppeteer`);
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      const result = await fetchWithCycleTLS(url);
+      if (!isBlocked(result.body)) return result;
+      console.log(`[blocked] ${endpoint} — attempt ${attempt}/3`);
+    } catch (err) {
+      console.log(`[cycletls failed] ${endpoint}: ${err.message} — attempt ${attempt}/3`);
+    }
   }
 
-  return fetchWithPuppeteer(url);
+  console.error(`[failed] ${endpoint} — all 3 attempts blocked`);
+  return { status: 502, body: JSON.stringify({ error: 'blocked after 3 attempts' }) };
 }
 
 app.get('/api/itf/*path', async (req, res) => {
@@ -90,10 +61,5 @@ app.get('/api/itf/*path', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
-// Warm up browser at startup so first Puppeteer fallback isn't cold
-getBrowser()
-  .then(() => console.log('Browser ready'))
-  .catch(err => console.error('Browser init failed:', err.message));
 
 app.listen(3000, () => console.log('ITF proxy running on port 3000'));
