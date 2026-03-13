@@ -19,12 +19,20 @@ async function fetchWithCycleTLS(url) {
   const response = await cycleTLS(url, {
     headers: {
       'Accept': 'application/json, text/plain, */*',
-      'Referer': 'https://www.itftennis.com/',
-      'Cache-Control': 'no-cache',
+      'Accept-Language': 'en-US,en;q=0.9',
+      'Accept-Encoding': 'gzip, deflate, br',
+      'Referer': 'https://www.itftennis.com/en/competition/tournaments/tennis-on-the-road-to-paris-olympic-games/',
+      'Origin': 'https://www.itftennis.com',
+      'sec-ch-ua': '"Chromium";v="130", "Google Chrome";v="130", "Not?A_Brand";v="99"',
+      'sec-ch-ua-mobile': '?0',
+      'sec-ch-ua-platform': '"Windows"',
+      'sec-fetch-dest': 'empty',
+      'sec-fetch-mode': 'cors',
+      'sec-fetch-site': 'same-origin',
     },
     ja3: '771,4865-4866-4867-49195-49199-49196-49200-52393-52392-49171-49172-156-157-47-53,0-23-65281-10-11-35-16-5-13-18-51-45-43-27-21,29-23-24,0',
-    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
-    timeout: 10,
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36',
+    timeout: 15,
   }, 'get');
   const body = await response.text();
   return { status: response.status, body };

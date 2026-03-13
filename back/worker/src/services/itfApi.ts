@@ -30,15 +30,16 @@ export class ITFApiClient {
   async fetchCalendar(circuitCode: string, dateFrom: string, dateTo: string): Promise<Tournament[]> {
     const data = await this.fetchFromProxy('TournamentApi/GetCalendar', {
       circuitCode,
-      dateFrom,
-      dateTo,
       skip: '0',
       take: '100',
+      dateFrom,
+      dateTo,
       isOrderAscending: 'true',
       orderField: 'startDate',
     });
 
     if (!data || !data.items) {
+      console.log('fetchCalendar: unexpected response', JSON.stringify(data)?.substring(0, 500));
       return [];
     }
 

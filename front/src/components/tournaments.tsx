@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import type { Tournament } from '../types/tournament';
-import { API_ENDPOINTS } from '../config/api';
 import { TournamentDetailComponent } from './tournamentDetail';
+import { useTournaments } from '../hooks/useTournaments';
 
 interface TournamentsProps {
   username: string;
@@ -9,40 +9,11 @@ interface TournamentsProps {
 }
 
 export function TournamentsComponent({ username, onChangeUsername }: TournamentsProps) {
-  const [tournaments, setTournaments] = useState<Tournament[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [circuitCode, setCircuitCode] = useState<'MT' | 'WT'>('MT');
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedTournament, setSelectedTournament] = useState<Tournament | null>(null);
 
-  useEffect(() => {
-    fetchTournaments();
-  }, [circuitCode, currentMonth]);
-
-  const fetchTournaments = async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const year = currentMonth.getFullYear();
-      const month = currentMonth.getMonth();
-      const dateFrom = new Date(year, month, 1).toISOString().split('T')[0];
-      const dateTo = new Date(year, month + 1, 0).toISOString().split('T')[0];
-
-      const params = new URLSearchParams({ circuitCode, dateFrom, dateTo });
-      const response = await fetch(`${API_ENDPOINTS.tournaments}?${params}`);
-
-      if (!response.ok) throw new Error('Failed to fetch tournaments');
-
-      const data = await response.json();
-      setTournaments(data);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load tournaments');
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { tournaments, loading, error, refetch } = useTournaments(circuitCode, currentMonth);
 
   const previousMonth = () => {
     setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1));
@@ -127,7 +98,7 @@ export function TournamentsComponent({ username, onChangeUsername }: Tournaments
         <div className="bg-(--rcolor-highlight) p-3 space-y-2">
           <div className="text-sm text-red-400">{error}</div>
           <button
-            onClick={fetchTournaments}
+            onClick={refetch}
             className="px-3 py-2 font-bold bg-gray-700 text-white hover:bg-gray-600"
           >
             Retry
